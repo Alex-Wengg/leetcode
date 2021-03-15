@@ -14,11 +14,16 @@ class Solution:
         result_tail = result
         carry = 0
                 
-        while l1 or l2 or carry:            
+        while l1 or l2 or carry:    
+            #check if the node has values
             val1  = (l1.val if l1 else 0)
             val2  = (l2.val if l2 else 0)
+            #check if the sum have carryovers
+            #and adding the previous carryover
+            #change the new carryover
+            #the resultof the out will be added to the node
             carry, out = divmod(val1+val2 + carry, 10)    
-                      
+            #
             result_tail.next = ListNode(out)
             result_tail = result_tail.next                      
             
