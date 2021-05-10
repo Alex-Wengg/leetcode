@@ -16,7 +16,7 @@ class Solution:
             suffix += str(remainder * 10 // q)
             remainder = remainder * 10 % q
             if remainder == 0 : return prefix + suffix
-        print(index)
+ 
         return prefix + suffix[:index[remainder]] + '(' + suffix[index[remainder]:] + ')'
  
  
