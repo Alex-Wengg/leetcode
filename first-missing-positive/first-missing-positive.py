@@ -1,11 +1,14 @@
 class Solution:
 # O(n) time
     def firstMissingPositive(self, nums):
-        for i in range(len(nums)):
-            while 0 <= nums[i]-1 < len(nums) and nums[nums[i]-1] != nums[i]:
-                tmp = nums[i]-1
-                nums[i], nums[tmp] = nums[tmp], nums[i]
-        for i in range(len(nums)):
-            if nums[i] != i+1:
-                return i+1
-        return len(nums)+1
+        unique = set(nums)
+        for i in range(len(nums)): #delete those useless elements
+            if nums[i]<0 or nums[i]>=len(nums):
+                nums[i]=0
+        small = 1
+        if small in unique:
+            for i in range(0,len(nums)+1):
+                if i+1 not in unique:
+                    return i+1
+                
+        return small
