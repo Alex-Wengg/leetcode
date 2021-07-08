@@ -10,28 +10,33 @@
  */
 class Solution {
 public:
-    struct compare {
-        bool operator()(const ListNode* l, const ListNode* r) {
-            return l->val > r->val;
+    static bool heapComp(ListNode* a, ListNode* b) {
+        return a->val > b->val;
+}
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        ListNode head(0);
+        ListNode *curNode  = &head;
+        vector<ListNode*> v;
+        
+        for (auto i: lists){
+            if (i) {
+                v.push_back(i);
+            }
         }
-    };
-    ListNode *mergeKLists(vector<ListNode *> &lists) { //priority_queue
-        priority_queue<ListNode *, vector<ListNode *>, compare> q;
-        for(auto l : lists) {
-            if(l)  q.push(l);
-        }
-        if(q.empty())  return NULL;
+        make_heap(v.begin(), v.end(), heapComp);
 
-        ListNode* result = q.top();
-        q.pop();
-        if(result->next) q.push(result->next);
-        ListNode* tail = result;            
-        while(!q.empty()) {
-            tail->next = q.top();
-            q.pop();
-            tail = tail->next;
-            if(tail->next) q.push(tail->next);
+        while(v.size() > 0){
+            curNode->next = v.front();
+            pop_heap(v.begin(), v.end(), heapComp);
+            v.pop_back();
+            curNode = curNode->next;
+            if (curNode->next){
+                v.push_back(curNode->next);
+                make_heap(v.begin(), v.end(), heapComp);
+                
+            
+            }
         }
-        return result;
-        }
+        return head.next;
+    }
 };
