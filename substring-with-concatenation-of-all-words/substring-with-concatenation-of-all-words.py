@@ -1,31 +1,39 @@
 class Solution:
-    def _findSubstring(self, l, r, n, k, t, s, req, ans):
-        curr = {}
-        while r + k <= n:
-            w = s[r:r + k]
-            r += k
-            if w not in req:
-                l = r
-                curr.clear()
-            else:
-                curr[w] = curr[w] + 1 if w in curr else 1
-                while curr[w] > req[w]:
-                    curr[s[l:l + k]] -= 1
-                    l += k
-                if r - l == t:
-                    ans.append(l)
-
-    def findSubstring(self, s, words):
-        if not s or not words or not words[0]:
+    def findSubstring(self, str1: str, words: List[str]) -> List[int]:
+        if len(words) == 0 or len(words[0]) == 0:
             return []
-        n = len(s)
-        k = len(words[0])
-        t = len(words) * k
-        req = {}
-        for w in words:
-            req[w] = req[w] + 1 if w in req else 1
-        ans = []
-        for i in range(min(k, n - t + 1)):
-            self._findSubstring(i, i, n, k, t, s, req, ans)
-        return ans
 
+        word_frequency = {}
+
+        for word in words:
+            if word not in word_frequency:
+                word_frequency[word] = 0
+            word_frequency[word] += 1
+        result_indices = []
+        count = len(words)
+        length = len(words[0])
+        
+        for i in range((len(str1) - count*length)+1):
+            
+            seen = {}
+            
+            for j in range(0, count):
+                
+                index = i + j * length 
+                
+                word = str1[index: index+length]
+                
+                if word not in word_frequency:
+                    break
+                
+                if word not in seen:
+                    seen[word] = 0
+                seen[word] += 1
+                
+                if seen[word] > word_frequency.get(word, 0):
+                    break
+                
+                if j+1 == count:
+                    result_indices.append(i)
+                    
+        return result_indices
