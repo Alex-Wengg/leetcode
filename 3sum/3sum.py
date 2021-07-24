@@ -1,25 +1,31 @@
  
 class Solution:
-    def threeSum(self, nums):
-        res = []
-        nums.sort()
-        for i in range(len(nums)-2):
-            if i > 0 and nums[i] == nums[i-1]:
+    def threeSum(self, arr):
+        triplets = []
+
+        start = 0
+        end = len(arr) -1 
+        arr.sort()
+
+        for i in range(0, len(arr)): 
+            if i > 0 and arr[i-1] == arr[i]:
                 continue
-            l, r = i+1, len(nums)-1
-            while l < r:
-                s = nums[i] + nums[l] + nums[r]
-                if s < 0:
-                    l +=1 
+            start = i+1 
+            end = len(arr) -1   
+            while start < end:
+                s = arr[start] + arr[end]+ arr[i]
+                if s == 0:
+                    triplets.append([arr[i], arr[start], arr[end]])
+                    end -= 1
+                    start += 1
+                    while start < end and arr[end+1 ] == arr[end]:
+                        end -= 1 
+                    while start < end and  arr[start-1] == arr[start]:
+                        start += 1 
                 elif s > 0:
-                    r -= 1
-                else:
-                    res.append((nums[i], nums[l], nums[r]))
-                    while l < r and nums[l] == nums[l+1]:
-                        l += 1
-                    while l < r and nums[r] == nums[r-1]:
-                        r -= 1
-                    l += 1; r -= 1
-        return res
+                    end -= 1 
+                elif s < 0:
+                    start += 1 
+        return triplets
 
                 
