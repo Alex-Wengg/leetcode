@@ -26,6 +26,7 @@ class Solution:
                     end -= 1 
                 elif s < 0:
                     start += 1 
+
         return triplets
 
                 
