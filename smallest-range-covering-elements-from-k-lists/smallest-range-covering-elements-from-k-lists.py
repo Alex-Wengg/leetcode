@@ -1,25 +1,30 @@
+from heapq import *
 class Solution:
     def smallestRange(self, lists: List[List[int]]) -> List[int]:
-        minHeap = []
-        rangeStart, rangeEnd = 0, math.inf
-        currentMaxNumber = -math.inf
+        
+        heapp = []
+        maxx = -10^5 -1 
+        smallest =0
+        largest = math.inf
 
-        # put the 1st element of each array in the max heap
-        for arr in lists:
-            heappush(minHeap, (arr[0], 0, arr))
-            currentMaxNumber = max(currentMaxNumber, arr[0])
-
-        # take the smallest(top) element form the min heap, if it gives us smaller range, update the ranges
-        # if the array of the top element has more elements, insert the next element in the heap
-        while len(minHeap) == len(lists):
-            num, i, arr = heappop(minHeap)
-            if rangeEnd - rangeStart > currentMaxNumber - num:
-                rangeStart = num
-                rangeEnd = currentMaxNumber
-
-            if len(arr) > i+1:
-              # insert the next element in the heap
-                heappush(minHeap, (arr[i+1], i+1, arr))
-                currentMaxNumber = max(currentMaxNumber, arr[i+1])
-
-        return [rangeStart, rangeEnd]
+        for i in lists:
+            popped = i.pop(0)
+            heappush(heapp, [popped, i])
+            maxx = max(maxx, popped)
+        
+        while len(lists) == len(heapp):
+            element, arr = heappop(heapp)
+            if largest - smallest > maxx - element:
+                largest = maxx
+                smallest =  element
+            
+            if len(arr) > 0:
+                popped = arr.pop(0)
+                
+                heappush(heapp, [popped, arr])
+                maxx = max(maxx,popped)
+            
+        return([ smallest,largest])
+            
+        
+         
