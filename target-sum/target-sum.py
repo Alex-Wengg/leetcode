@@ -1,6 +1,6 @@
 class Solution:
     def findTargetSumWays(self, nums, S):
-        count = {}
+        count =  defaultdict(int)
         count[0] = 1
         for x in nums:
             step = defaultdict(int)
@@ -8,5 +8,5 @@ class Solution:
                 step[y + x] += count[y]
                 step[y - x] += count[y]
             count = step
-
+        print(count)
         return count[S]
