@@ -1,17 +1,24 @@
 class Solution:
     def canPartition(self, nums):
-        total = sum(nums)
-        if total % 2 == 1: return False
-        target = total / 2   #target sum 
-        s = set([0])         #stores the sums of the subsets
+        summ = sum(nums) 
+        if summ % 2 != 0:
+            return False
+        return self.helper(summ//2, nums)
+    def helper(self,summ, nums):
         
-       
-        for n in nums:
-            sums_with_n = []  #stores the sums of the subsets that contain n
-            for i in s:
-                if i + n == target: return True
-                if i + n < target:
-                    sums_with_n.append(i + n)
-            s.update(sums_with_n)
-            print(s)
-        return False
+        dp = [[False for i in range(summ+1)] for j in range(len(nums))]
+                
+        for i in range(len(nums)):
+            dp[i][0] = True
+        for j in range(1, summ+1):
+            dp[0][j] = nums[0] == j
+            
+        for i in range(len(nums)):
+            for j in range(summ+1):
+                
+                if dp[i-1][j]:
+                    dp[i][j] = dp[i-1][j]
+                elif j > nums[i]:
+                    dp[i][j] = dp[i-1][j-nums[i]]
+                    
+        return dp[len(nums)-1][summ]
