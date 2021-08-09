@@ -1,14 +1,10 @@
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
-        dp = [0] * (1+target)
-        for num in nums:
-            if num <= target:
-                dp[num] = 1
-        
-        for i in range(target+1):
-            for num in nums:
-                if i - num >= 0:
-                    dp[i] += dp[i-num]
-            print(dp)
-        
-        return dp[-1]
+        dictt = { 0:1}
+   
+        for i in range(1,target+1 ):
+            dictt[i] = 0
+            for j in nums:
+                if i - j >= 0:
+                    dictt[i] += dictt.get(i - j , 0)
+        return(dictt[target])   
