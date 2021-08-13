@@ -1,31 +1,32 @@
 class Solution(object):
     def mergeKLists(self, lists):
-        if not lists:
+        if not lists or len(lists) == 0:
             return None
-        if len(lists) == 1:
-            return lists[0]
-        mid = len(lists) // 2
-        l, r = self.mergeKLists(lists[:mid]), self.mergeKLists(lists[mid:])
-        return self.merge(l, r)
-    
-    def merge(self, l, r):
-        dummy = p = ListNode()
-        while l and r:
-            if l.val < r.val:
-                p.next = l
-                l = l.next
-            else:
-                p.next = r
-                r = r.next
-            p = p.next
-        p.next = l or r
-        return dummy.next
-    
-    def merge1(self, l, r):
-        if not l or not r:
-            return l or r
-        if l.val< r.val:
-            l.next = self.merge(l.next, r)
-            return l
-        r.next = self.merge(l, r.next)
-        return r
+        def mergeTwoLists(l1, l2):
+            res = []
+            dummy = ListNode()
+            l3 = dummy
+            while l1 and l2:
+                if l1.val > l2.val:
+                    l3.next = l2
+                    l2 = l2.next
+                else:
+                    l3.next = l1
+                    l1 = l1.next
+                l3 = l3.next
+            if l1:
+                l3.next = l1
+            elif l2:
+                l3.next = l2
+            return dummy.next
+        
+        while len(lists) > 1:
+            mergedLists = [ ]
+
+            for i in range(0, len(lists), 2):
+                l1 = lists[i]
+                l2 = lists[i+1] if (i+1) < len(lists) else None
+                mergedLists.append(mergeTwoLists(l1, l2))
+            lists = mergedLists
+        return lists[0]
+
