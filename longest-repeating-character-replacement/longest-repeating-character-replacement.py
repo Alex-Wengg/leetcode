@@ -15,11 +15,12 @@ class Solution:
             
             largest = max(largest, mapp[right])
             
-            if(end - start + 1 - largest) > k:
-                left = str1[start]
-                mapp[left] -= 1 
-                start += 1 
+
             
-    
+            if (end - start + 1 - largest) > k:
+                left = str1[start]
+                
+                start += 1 
+                mapp[left] -=1
 
         return end - start + 1
