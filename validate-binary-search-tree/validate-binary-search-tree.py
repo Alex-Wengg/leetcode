@@ -7,11 +7,11 @@
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
         
-        def valid(node, left, right):
+        def valid(node, smaller, greater):
             if not node:
                 return True
-            if not (left <  node.val < right):
+            if not (smaller <  node.val < greater):
                 return False
-            return valid(node.left,left, node.val ) and valid(node.right, node.val, right)
+            return valid(node.left,smaller, node.val ) and valid(node.right, node.val, greater)
         return valid(root, float("-inf"), float("inf"))
     
