@@ -21,12 +21,7 @@ class Solution(object):
             return dummy.next
         
         while len(lists) > 1:
-            mergedLists = [ ]
-
-            for i in range(0, len(lists), 2):
-                l1 = lists[i]
-                l2 = lists[i+1] if (i+1) < len(lists) else None
-                mergedLists.append(mergeTwoLists(l1, l2))
-            lists = mergedLists
+            l1 = lists.pop()
+            l2 = lists.pop()  
+            lists.append(mergeTwoLists(l1, l2))
         return lists[0]
-
