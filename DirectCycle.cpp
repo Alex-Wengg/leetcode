@@ -20,7 +20,9 @@ void Graph::addEdge(int v, int w){
   adj[v].push_back(w);
 }
 bool Graph::isCyclicUtil(int v, bool visited[], bool *recStack){
+    visited[v] = true;
     recStack[v] = true;
+
 
     list<int>::iterator i;
     for(i = adj[v].begin(); i != adj[v].end(); ++i){
