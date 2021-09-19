@@ -1,28 +1,17 @@
 class Solution:
     def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
-        result = []
-        preWords = {}
+        seen = set(words)
         
-        words.sort(key = lambda x : len(x))
-        for i in range(len(words)):
-            if self.dp(words[i], preWords):
-                result.append(words[i])
-            preWords[words[i]] = 1
-        return result
-    
-    def dp(self,word, dicc):
-        if not(dicc):
-            return False;
+        @cache
+        def fn(word):
+            """Return True if input is a concatenated word."""
+            for i in range(1, len(word)): 
+                prefix = word[:i]
+                suffix = word[i:]
+                if prefix in seen and (suffix in seen or fn(suffix)): return True 
+            return False 
         
-        dp = [False for i in range(len(word)+1)]
-        
-        dp[0] = True
-        
-        for i in range(1, len(word)+1):
-            for j in range(i):
-                if not(dp[j]):
-                    continue
-                if (word[j:i]) in dicc:
-                    dp[i] = True
-                    break
-        return dp[len(word)]
+        ans = []
+        for word in words: 
+            if fn(word): ans.append(word)
+        return ans 
