@@ -1,58 +1,49 @@
-class TrieNode(object):
+class TrieNode():
     def __init__(self):
-        self.children = {}
         self.isEnd = False
-        self.data = None
-        self.rank = 0
-
-
-class AutocompleteSystem:
-
-    def __init__(self, sentences: List[str], times: List[int]):
-
+        self.children = {}
+        self.hot = 0
+    
+class AutocompleteSystem(object):
+    def __init__(self, sentences, times):
         self.root = TrieNode()
-        self.keyword = ""
+        self.searchTerm = ""
         for i, sentence in enumerate(sentences):
-            self.addRecord(sentence, times[i])
+            self.add(sentence, times[i])
+			
+    def add(self,sentence, hot):
+        node = self.root
+        for c in sentence: 
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            node = node.children[c]
+        node.isEnd = True
+        node.hot-= hot
+        
+    def search(self):
+        node = self.root
+        res = []
+        path = ""
+
+        for c in self.searchTerm:
+            if c not in node.children:
+                return res
+            path +=c
+            node = node.children[c]
+        self.dfs(node, path,res)
+        return [item[1] for item in sorted(res)[:3]]
             
-    def addRecord(self, sentence, hot):
-        p = self.root
-        for c in sentence:
-            if c not in p.children:
-                p.children[c] = TrieNode()
-            p = p.children[c]
-        p.isEnd = True
-        p.data = sentence
-        p.rank -= hot
-    
-    def dfs(self, root):
-        ret = []
-        if root:
-            if root.isEnd:
-                ret.append((root.rank, root.data))
-            for child in root.children:
-                ret.extend(self.dfs(root.children[child]))
-        return ret
-    
-    def search(self, sentence):
-        p = self.root
-        for c in sentence:
-            if c not in p.children:
-                return []
-            p = p.children[c]
-        return self.dfs(p)
-    
-    def input(self,c):
-        result = [] 
-        if c!= "#":
-            self.keyword+= c
-            result = self.search(self.keyword)
+    def dfs(self,node, path, res):
+        if node.isEnd:
+            res.append((node.hot,path))
+        for c in node.children:
+            self.dfs(node.children[c], path+c,res)
+            
+    def input(self, c):
+        if c != "#":
+            self.searchTerm +=c
+            return self.search()
         else:
-            self.addRecord(self.keyword, 1)
-            self.keyword = ""
-        return [item[1] for item in sorted(result)[:3]]
-
-
-# Your AutocompleteSystem object will be instantiated and called as such:
-# obj = AutocompleteSystem(sentences, times)
-# param_1 = obj.input(c)
+            self.add(self.searchTerm, 1)
+            self.searchTerm =""
+        
