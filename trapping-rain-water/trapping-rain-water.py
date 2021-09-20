@@ -17,7 +17,7 @@ class Solution:
             
             
             i = 0
-            for h in reverse:
+            for h in height:
                 
                 trapped += min(leftList[i], rightList[i]) - h
                 i += 1
