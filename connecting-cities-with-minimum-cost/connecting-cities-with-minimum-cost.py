@@ -17,11 +17,13 @@ class Solution:
         total = 0
         
         while queue and len(visited) < N :
-            
+            #PST uses pq and greedy algorithm
             cost, city = heapq.heappop(queue)
+            #standard dfs stuff on graphs
             if city not in visited:
                 visited.add(city)
                 total += cost
+                #add to pq 
                 for cost, next_city in G[city]:
                     heapq.heappush(queue, (cost, next_city))
         return total if len(visited) == N else -1 
