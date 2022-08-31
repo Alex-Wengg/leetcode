@@ -10,7 +10,7 @@ class Solution:
             
             for col in range(len(matrix[0]) + 1):
                 
-                while stack and height[stack[-1]] > height[col]:
+                while  height[stack[-1]] > height[col]:
                     h = height[stack.pop()]
                     w = col - stack[-1] - 1
                     ans = max(ans, h * w)
