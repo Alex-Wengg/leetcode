@@ -1,7 +1,6 @@
 class Solution:
     def maximalRectangle(self, matrix: List[List[str]]) -> int:
         
-        
         height = [0] * (len(matrix[0]) + 1)
         ans = 0 
         for row in matrix:
