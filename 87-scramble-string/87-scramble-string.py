@@ -12,10 +12,7 @@ class Solution:
                 return dp[(s1,s2)]
             dp[(s1,s2)] = False
             for i in range(1, n):
-                if f(s1[:i], s2[:i]) and f(s1[i:], s2[i:]):
-                    dp[(s1, s2)] = True
-                    return True
-                if f(s1[:i], s2[-i:]) and f(s1[i:], s2[:-i]):
+                if f(s1[:i], s2[:i]) and f(s1[i:], s2[i:]) or f(s1[:i], s2[-i:]) and f(s1[i:], s2[:-i]):
                     dp[(s1, s2)] = True
                     return True
             return dp[(s1,s2)]
