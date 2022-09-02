@@ -28,7 +28,6 @@ class Solution:
             
             for j in range(1, len(s)+1):
                 dp[i][j] = dp[i][j-1]
-                print(t[i-1], s[j-1])
                 if t[i-1] == s[j-1]:
                     dp[i][j] += dp[i-1][j-1]
 
