@@ -1,18 +1,13 @@
 class Solution:
     def minCut(self, s: str) -> int:
+        n = len(s)
+        cut = [-1] + [n] * n 
+        isPalin = [[False] * n for _ in range(n)]
         
-        pal = [[True] * len(s) for _ in range(len(s))]
-        cut = [0] * len(s)
-   
-        minCut = 0
-        
-        for i in reversed(range(0, len(s))):
-            minCut = float('inf')
-            for j in range(i, len(s)):
-                pal[i][j] = s[i] == s[j] and ( j - i < 3 or pal[i+1][j-1])
-                if pal[i][j]:                        
-                    minCut = min(minCut, cut[j+1] + 1 if len(s) - 1 > j else 0)
-
-            cut[i] = minCut
-
-        return cut[0]
+        for i in range(n):
+            for j in range(i+1):
+                if s[i] == s[j] and (j+1>=i or isPalin[i-1][j+1]):
+                    isPalin[i][j] = True
+                    cut[i+1] = min(cut[i+1], cut[j]+1)
+                    
+        return cut[-1]
