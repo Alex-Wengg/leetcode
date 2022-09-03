@@ -9,7 +9,7 @@ class Solution:
         res = float("-inf")
         def helper(node):
             nonlocal res
-            if node is None:
+            if node == None:
                 return 0
             
             left = max(helper(node.left), 0 )
