@@ -28,8 +28,11 @@ class Solution:
                 deltaGcd = gcd(deltaX, deltaY)
                 dX = deltaX // deltaGcd
                 dY = deltaY // deltaGcd
-                
+                # our refrained loop to increment
                 mapp[(dX,dY)] += 1
+                # with i loop x1 and x2 as the comparator 
+                # check other comparator of j loop
                 maxx = max(maxx, mapp[(dX,dY)])
+            # +1 for because the j loop gives n-1 total increments
             solution = max(solution, maxx + duplicate + 1 )  
         return solution
