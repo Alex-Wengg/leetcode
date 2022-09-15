@@ -13,9 +13,9 @@ class Solution:
         
         for i in range(1,k+1):
             # mini buy to initialize the dp
-            max_buy = -prices[0]
+            max_profitFromBuy = -prices[0]
             for j in range(1, n):
-                dp_sell[i][j] = max(dp_sell[i][j-1], prices[j]+max_buy)
-                max_buy = max(max_buy, -prices[j] + dp_sell[i-1][j])
+                dp_sell[i][j] = max(dp_sell[i][j-1], prices[j]+max_profitFromBuy)
+                max_profitFromBuy = max(max_profitFromBuy, -prices[j] + dp_sell[i-1][j])
         return dp_sell[-1][-1]
             
