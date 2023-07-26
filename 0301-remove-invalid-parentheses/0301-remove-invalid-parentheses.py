@@ -14,16 +14,25 @@ class Solution:
                         return False
             return count == 0
 
-        q = []
-        q.append((s, 0))
+        q = [s]
+        ht = set( )
+        
         res = []
-        while q:
-            ss, position = q.pop(0)
 
-            if(isValided(ss)):
+        while q:
+            ss = q.pop(0)
+            
+            # skippers
+            if ss in ht:
+                continue
+            ht.add(ss)
+            
+            # checkers 
+            if isValided(ss):
                 res.append(ss)
             elif not res:
-                for i in range(position, len(ss)):
-                    if ss[i] in {'(',')'} and (i == position or ss[i]!=ss[i-1]):
-                        q.append((ss[0:i] + ss[i+1:], i))
+
+                for i in range(len(ss)):
+                    if ss[i] in {'(',')'}:
+                        q.append(ss[0:i] + ss[i+1:])
         return res
