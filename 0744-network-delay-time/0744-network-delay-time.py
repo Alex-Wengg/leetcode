@@ -1,47 +1,33 @@
 from collections import defaultdict
+import heapq
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        map = defaultdict(list)
 
-
-
-
-
-
-
-
-
-
-
-
-        earliestTime = {}
-
-        for i in range(1, n+1):
-            earliestTime[i] = float('inf')
-        earliestTime[k] = 0 
-
-        next = defaultdict(list)
         for x,y,z in times:
-            next[x].append((y,z))
-        
-        q = [(k, 0)]
-        while q:
-            curNode, curTime = q.pop(0)
+            map[x].append((y,z))
 
-            if curTime > earliestTime[curNode]:
+        greater = []
+        pq = [(0, k)]
+
+        resolved = [0] * (n+1)
+        ret = 0 
+
+        while pq:
+            d, cur = heapq.heappop(pq)
+
+            if resolved[cur]:
                 continue
             
-            for t in next[curNode]:
-                nextNode, weight = t
-                if earliestTime[nextNode] <= earliestTime[curNode] + weight:
-                    continue
+            resolved[cur] = 1
+            ret = max(ret, d)
 
-                earliestTime[nextNode] = earliestTime[curNode] + weight
-                q.append((nextNode, earliestTime[nextNode]))
-        
-        result = 0 
+            for next, weight in map[cur]:
+                if resolved[next]:
+                    continue
+                heapq.heappush(pq, (d+weight, next))
+
         for i in range(1, n+1):
-            result = max(result, earliestTime[i])
-        
-        if result == float('inf'):
-            return -1
-        return result 
+            if resolved[i] == 0:
+                return -1
+        return ret
