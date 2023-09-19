@@ -7,27 +7,27 @@ class Solution:
         for x,y,z in times:
             map[x].append((y,z))
 
-        greater = []
-        pq = [(0, k)]
-
-        resolved = [0] * (n+1)
-        ret = 0 
-
-        while pq:
-            d, cur = heapq.heappop(pq)
-
-            if resolved[cur]:
-                continue
-            
-            resolved[cur] = 1
-            ret = max(ret, d)
-
-            for next, weight in map[cur]:
-                if resolved[next]:
-                    continue
-                heapq.heappush(pq, (d+weight, next))
+        dist = [float('inf')] * (n + 1)
+        seen = [0] * (n+1)
+        dist[k] = 0
 
         for i in range(1, n+1):
-            if resolved[i] == 0:
-                return -1
-        return ret
+            minVal = float('inf')
+            minNode = -1
+
+            for j in range(1, n+1):
+                if (not(seen[j]) and dist[j] < minVal):
+                    minVal = dist[j]
+                    minNode = j
+                
+            if minNode == -1:
+                break
+            
+            seen[minNode] = 1
+            for next, d in map[minNode]:
+                dist[next] = min(dist[next], dist[minNode] + d)
+            
+        ret = 0
+        for i in range(1, n+1):
+            ret = max(ret, dist[i])
+        return -1 if ret == float('inf')  else ret 
