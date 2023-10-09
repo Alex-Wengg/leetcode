@@ -5,8 +5,8 @@ class Solution(object):
         for i in nums1:
             map[i] = map.get(i, 0) + 1
         for j in nums2:
-            if j in map and map[j] > 0:
+            if j in map:
                 res.append(j)
-                map[j] = 0
+                del map[j] 
         
         return res
