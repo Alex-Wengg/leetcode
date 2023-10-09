@@ -1,54 +1,31 @@
 class Solution:
-  def alienOrder(self, words):
-    map = {}
-    degree = {}
-    result = ""
+    def alienOrder(self, words):
+        # a -> b
+        adj = defaultdict(set)
+        # in-degree
+        deg = {c: 0 for w in words for c in w}
+        for i, w1 in enumerate(words[:-1]):
+            is_prefix = True
 
-    if (not(words)) :
-      return result
+            w2 = words[i + 1]
+            for c1, c2 in zip(w1, w2):
+                if c1 == c2: continue
+                if c2 not in adj[c1]: deg[c2] += 1
+                is_prefix = False
 
-    for s in words:
-      for c in s:
-        degree[c] = 0
-
-    for i in range(len(words)-1):
-      cur = words[i]
-      next = words[i+1] 
-      if len(cur) > len(next) and cur.startswith(next):
-        return ""
-      length = min(len(cur), len(next))
-
-      for j in range(length):
-        c1 = cur[j]
-        c2 = next[j]
-        if c1 != c2:
-          set_ = set()
-          if (c1 in map):
-            set_ = map[c1]
-          
-          if c2 not in set_:
-            set_.add(c2)
-            map[c1] = set_
-            degree[c2] = degree.get(c2, 0) + 1 
-          
-          break
-      
-    q = []
-    for c, v in degree.items():
-      if v == 0:
-        q.append(c)
-      
-    while q:
-      c = q.pop()
-      result += c
-      if c in map:
-        for c2 in map[c]:
-          degree[c2] = degree[c2] -1
-          if degree[c2] == 0:
-            q.append(c2)
-      
-    if len(result) != len(degree):
-      return ""
-    return result 
+                adj[c1].add(c2)
+                break
+            if is_prefix == True and len(w1) > len(w2):
+                return ""
 
 
+        res = ''
+        # start w 0 indegree nodes
+        q = deque([c for c in deg if not deg[c]])
+        while q:
+            c = q.popleft()
+            res += c
+            for n in adj[c]:
+                deg[n] -= 1
+                if not deg[n]: q.append(n)
+        return res if len(res) == len(deg) else ''           
