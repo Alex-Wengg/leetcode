@@ -3,30 +3,41 @@ class Solution:
         # a -> b
         adj = defaultdict(set)
         
-        # in-degree construction
-        deg = {c: 0 for w in words for c in w}
-
+        # in-de gree construction
+        indegree = {}
+        for word in words:
+            for c in word:
+                indegree[c] = 0 
         # adjList construction
-        for i, w1 in enumerate(words[:-1]):
+        for i in range(len(words)-1):
             is_prefix = True
-            w2 = words[i + 1]
+            w1 = words[i]
+            w2 = words[i+1]
             for c1, c2 in zip(w1, w2):
-                if c1 == c2: continue
-                if c2 not in adj[c1]: deg[c2] += 1
+                if c1 == c2:
+                    continue
+                
+                if c2 not in adj[c1]:
+                    indegree[c2] += 1
+                
                 is_prefix = False
-
                 adj[c1].add(c2)
-                break
+                break 
+
             if is_prefix == True and len(w1) > len(w2):
                 return ""
 
+
+        # sort by inde gree, traversed by adjList
         res = ''
-        # sort by indegree, traversed by adjList
-        q = deque([c for c in deg if not deg[c]])
+        q = [  c for c, v in indegree.items() if not v]
+
         while q:
-            c = q.popleft()
-            res += c
-            for n in adj[c]:
-                deg[n] -= 1
-                if not deg[n]: q.append(n)
-        return res if len(res) == len(deg) else ''    
+            node = q.pop()
+            res += node
+            for nei in adj[node]:
+                indegree[nei] -= 1
+                if not indegree[nei]:
+                    q.append(nei)
+        
+        return res if len(indegree) == len(res) else ""
