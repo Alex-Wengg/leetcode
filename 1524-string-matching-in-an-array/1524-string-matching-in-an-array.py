@@ -1,9 +1,5 @@
 class Solution:
     def stringMatching(self, words: List[str]) -> List[str]:
-        cnt = []
-        for word in words:
-
-            for other_word in words:
-                if other_word != word and word in other_word:
-                    cnt.append(word)
-        return list(set(cnt))
+        arr = ' '.join(words)
+        subStr = [i for i in words if arr.count(i) >= 2]
+        return subStr
