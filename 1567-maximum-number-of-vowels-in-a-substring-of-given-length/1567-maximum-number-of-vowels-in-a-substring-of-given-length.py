@@ -8,9 +8,7 @@ class Solution:
         for i, c in enumerate(s):
             if c in vowels:
                 cnt += 1
-            if i - k >= 0 and s[i- k] in vowels:
+            if i - k >= 0 and s[i-k] in vowels:
                 cnt -= 1
-            ans = max(cnt, ans)
-
-        return ans if k >= ans else k
-        
+            ans = max(ans, cnt)
+        return ans 
