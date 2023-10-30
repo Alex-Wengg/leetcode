@@ -9,12 +9,7 @@ class Solution:
         while left < right:
             sum_ = nums[left] +  nums[right]
             
-            if sum_ > k:
-                right -= 1
-            elif sum_ < k:
-                left += 1
-            else:
-                cnt += 1
-                right -= 1
-                left += 1
+            right -= 1 if sum_ >= k else 0
+            left += 1 if sum_ <= k else 0
+            cnt += 1 if sum_ == k else 0
         return cnt
