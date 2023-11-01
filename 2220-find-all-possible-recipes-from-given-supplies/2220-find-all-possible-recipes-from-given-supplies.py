@@ -1,28 +1,27 @@
 class Solution:
     def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
         
-        graph = defaultdict(list)
-        indegree = defaultdict(int)
-        q = deque()
-        result = []
+        rec_ingred = { r : i for r, i in zip(recipes, ingredients)}
+        supplies = set(supplies)
+        visited = set()
+        can_make = {} 
+        def dfs(recipe):
+            # If we've already determined whether we can make this recipe, return the result.
+            if recipe in can_make:
+                return can_make[recipe]
+
+            can_make[recipe] = False  # Initially mark as False to handle circular dependencies.
+
+            # Check if all ingredients are available or can be made.
+            for ingredient in rec_ingred[recipe]:
+                if ingredient not in supplies and (ingredient not in rec_ingred or not dfs(ingredient)):
+                    return False
+
+            can_make[recipe] = True  # If we reach here, all ingredients are available/makeable.
+            return True
         
-        # everything in supplies has an indegree of 0
-        for s in supplies:
-            indegree[s] = 0
-            q.append(s)
-            
-        for i, r in enumerate(recipes):
-            for ing in ingredients[i]:
-                graph[ing].append(r)
-                indegree[r] += 1
-                
-        while q:
-            node = q.pop()
-            if node in recipes:
-                result.append(node)
-            for n in graph[node]:
-                indegree[n] -= 1
-                if indegree[n] == 0:
-                    q.append(n)
-                    
-        return result
+        cnt = []
+        for recipe in recipes:
+            if dfs(recipe):
+                cnt.append(recipe)
+        return cnt
