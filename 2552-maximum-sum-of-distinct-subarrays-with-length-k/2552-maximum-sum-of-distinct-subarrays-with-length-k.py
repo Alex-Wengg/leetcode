@@ -1,21 +1,22 @@
 class Solution:
     def maximumSubarraySum(self, nums: List[int], k: int) -> int:
         
-        seen = set()
-        i = 0
-        ans = 0
-        cur = 0
+        set_ = set()
+        left = 0
+        sum_ = 0
+        tmpSum = 0
 
-        for j, x in enumerate(nums):
-            cur += nums[j]
+        for right, x in enumerate(nums):
+            tmpSum += nums[right]
             
-            while j+1-i > k or nums[j] in seen:
-                seen.remove(nums[i])
-                cur -= nums[i]
-                i += 1
-            seen.add(x)
 
-            if j+1-i == k:
-                ans = max(cur, ans)
+            while right - left +1 > k or x in set_:
+                set_.remove(nums[left])
+                tmpSum -= nums[left]
+                left += 1
+            set_.add(x)
 
-        return ans or 0
+            if  right - left +1 == k:
+                sum_ = max(sum_, tmpSum)
+
+        return sum_
