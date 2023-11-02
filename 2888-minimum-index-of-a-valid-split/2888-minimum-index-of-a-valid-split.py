@@ -21,8 +21,7 @@ class Solution:
             
             # Check if the dominant element is the same for the prefix and suffix
             # And whether it meets the frequency requirements
-            if (nums[i] == dominant or nums[i+1] == dominant) and \
-                    prefix_counter[dominant] * 2 > i + 1 and \
+            if   prefix_counter[dominant] * 2 > i + 1 and \
                     suffix_counter[dominant] * 2 > n - i - 1:
                 # Update result to the current index if all conditions are met
                 res = i
