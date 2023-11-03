@@ -9,10 +9,8 @@ class Solution:
                 num = num * 10 + int(c)
             if c in "-+*/" or (  i == len(s) - 1):
 
-                if sign == "-":
-                    stack.append(-num)
-                elif sign == "+":
-                    stack.append(num)
+                if sign in "-+":
+                    stack.append(num if sign == '+' else -num)
                 elif sign == "*":
                     stack.append(stack.pop()*num)
                 else:
@@ -21,6 +19,6 @@ class Solution:
                         stack.append(tmp//num+1)
                     else:
                         stack.append(tmp//num)
-                sign = s[i]
+                sign = c
                 num = 0
         return sum(stack)
