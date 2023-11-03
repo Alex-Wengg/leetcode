@@ -2,8 +2,8 @@ class Solution:
     def calculate(self, s: str) -> int:
         number = 0
         stack = []
-        sign = 1
-        res = 0
+        sign = 1 #
+        res = 0 # using res to cache past result for () encounters
 
         for i, c in enumerate(s): 
             if c.isdigit(): # 
