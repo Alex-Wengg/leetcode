@@ -1,26 +1,27 @@
 class Solution:
     def calculate(self, s: str) -> int:
         number = 0
-        sign = 1
-        result = 0
         stack = []
+        sign = 1
+        res = 0
 
-        for i, c in enumerate(s):
-            if c.isdigit():
-                number = 10 * number + int(c)
+        for i, c in enumerate(s): 
+            if c.isdigit(): # 
+                number = number * 10 + int(c)  # 
             elif c in '-+)':
-                result += sign * number
+                res += number * sign # 
                 number = 0
                 if c in '-+':
                     sign = 1 if c == '+' else -1
                 elif c == ')':
-                    result *= stack.pop()
-                    result += stack.pop()
+                    res *= stack.pop()
+                    res += stack.pop()
             elif c == '(':
-                stack.extend([ result, sign ])
-                sign = 1
-                result = 0
+                stack.append(res)
+                stack.append(sign)
+                sign = 1 #
+                res = 0 #
             
         if number != 0:
-            result += sign * number 
-        return result
+            res += sign * number
+        return res
