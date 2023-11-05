@@ -9,9 +9,7 @@ class Solution:
               
         def recur_fn(node,parent):
             curr = values[node]
-            res = 0
-            for child in graph[node]:
-                res += recur_fn(child,node)  if child != parent else 0 
+            res = sum ( recur_fn(child,node)  for child in graph[node] if  child != parent )
             return min(res,curr) if res != 0 else curr
 
         return  sum(values) - recur_fn(0,-1)
