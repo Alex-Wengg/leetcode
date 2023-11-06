@@ -7,10 +7,8 @@ class Solution:
         visitState = [0] * n
         g = [[] for i in range(n)]
         def dfs(i):
-            if visitState[i]  == 1:
-                return True
-            if visitState[i] == -1:
-                return False
+            if visitState[i] != 0 :
+                return visitState[i] == 1
             
             visitState[i] = -1
             for j in g[i]:
