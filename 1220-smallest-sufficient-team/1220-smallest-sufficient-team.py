@@ -4,9 +4,7 @@ class Solution:
         dp = {0 : []}
 
         for i, p in enumerate(people):
-            curr_skill = 0
-            for skill in p:
-                curr_skill |= 1 << skill_index.get(skill, 0 )
+            curr_skill = sum(1 << skill_index.get(skill, 0 ) for skill in p)
             
             for prev, need in dict(dp).items():
                 comb = prev | curr_skill
