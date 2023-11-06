@@ -1,29 +1,27 @@
 class Solution:
     def minimumSemesters(self, n: int, relations: List[List[int]]) -> int:
-        g = defaultdict(list)
-        inDegree = [0] * (n+1)
-        for r in relations:
-            g[r[0]].append(r[1])
-            inDegree[r[1]] += 1
         
-        q = []
-        for i in range(1, n+1):
-            if inDegree[i] == 0:
-                q.append(i)
+        def dfs(i, g, vDepth, visitState):
+            if visitState[i]  == 1:
+                return True
+            if visitState[i] == -1:
+                return False
+            
+            visitState[i] = -1
+            for j in g[i]:
+                if not(dfs(j, g, vDepth, visitState)):
+                    return False
+                vDepth[i] = max(vDepth[i], 1 + vDepth[j])
+            visitState[i] = 1
+            return True 
 
-        semester = 0
-        while q:
-            sz = len(q)
-            for i in range(sz):
-                c = q.pop(0)
-                n -= 1
-                if c not in g:
-                    continue
-                for course in g[c]:
-                    inDegree[course] -= 1
-                    if inDegree[course] == 0:
-                        q.append(course)
-                del g[c]
+        vDepth = [1] * n
+        visitState = [0] * n
+        g = [[] for i in range(n)]
+        for v in relations:
+            g[v[0] - 1].append(v[1] - 1)
 
-            semester += 1
-        return semester if n == 0 else -1
+        for i in range(n):
+            if not(dfs(i, g, vDepth, visitState)):
+                return -1
+        return max(vDepth)
