@@ -8,8 +8,6 @@ class Solution:
             
             for prev, need in dict(dp).items():
                 comb = prev | curr_skill
-                if comb == prev:
-                    continue
                 if comb not in dp or len(dp[comb]) > len(need) + 1:
                     dp[comb] = need + [i]
             
