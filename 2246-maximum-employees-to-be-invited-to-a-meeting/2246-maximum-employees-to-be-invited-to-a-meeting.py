@@ -1,42 +1,39 @@
 class Solution:
     def maximumInvitations(self, favorite: List[int]) -> int:
+
+
+        res = 0
         n = len(favorite)
-        visited = [0 for i in range(n)]
-        indegrees = [ 0 for i in range(n)]
+        al = [ [ ] for i in range(n)]
+        visited= [{} for i in range(100000)]
+
+        def dfs(curr, adj):
+            visited[curr] = True
+            res = 0
+            for x in adj[curr]:
+                res = max(res, dfs(x, adj))
+            return res + 1
 
         for i in range(n):
-            indegrees[favorite[i]] += 1
+            if favorite[favorite[i]] != i:
+                al[favorite[i]].append(i)
         
-        q = []
         for i in range(n):
-            if indegrees[i] == 0:
-                q.append(i)
-                visited[i] = 1
+            if favorite[favorite[i]] == i:
+                res +=dfs(i, al)
         
-        dp = [0 for i in range(n)]
-        while q:
-            i = q.pop()
-            j = favorite[i]
-            dp[j] = max(dp[j], dp[i] + 1)
-            indegrees[j] -= 1
-            if indegrees[j] == 0:
-                visited[j] = 1
-                q.append(j)
-        
-        result = 0
-        result2 = 0
         for i in range(n):
-            if visited[i]:
-                continue
-            length = 0 
-            j = i 
-            while visited[j] == 0:
-                visited[j] = 1
-                length += 1
+            cnt = 0
+            j = i
+            while not(visited[j]):
+                visited[j] = True
+                cnt += 1
                 j = favorite[j]
-
-            if length == 2:
-                result2 += 2 + dp[i] + dp[favorite[i]]
-            else:
-                result = max(result ,length)
-        return max(result, result2)
+        
+            k = i
+            while k != j:
+                cnt -= 1
+                k = favorite[k]
+            res = max(res, cnt)
+        
+        return res
