@@ -1,60 +1,42 @@
 class Solution:
     def maximumInvitations(self, favorite: List[int]) -> int:
         n = len(favorite)
-        maxc = 0
-        seen = [0] * n
+        visited = [0 for i in range(n)]
+        indegrees = [ 0 for i in range(n)]
 
-        for idx in range(n):
-            if seen[idx] == 0:
-                start = idx
-                cur_people = idx
-                curset = set()
-
-                while seen[cur_people] == 0:
-                    seen[cur_people] = 1
-                    curset.add(cur_people)
-                    cur_people = favorite[cur_people]
-                
-                if cur_people in curset:
-                    cursum = len(curset)
-
-                    while start != cur_people:
-                        cursum -= 1
-                        start = favorite[start]
-                    maxc = max(maxc, cursum)
-        
-        pair = []
-        visited = [ 0] * n
         for i in range(n):
-            if favorite[favorite[i]] == i and visited[i] == 0:
-                pair.append([i, favorite[i]])
+            indegrees[favorite[i]] += 1
+        
+        q = []
+        for i in range(n):
+            if indegrees[i] == 0:
+                q.append(i)
                 visited[i] = 1
-                visited[favorite[i]] = 1
-        res = 0
-        child = collections.defaultdict(list)
-        for i in range(n):
-            child[favorite[i]].append(i)
         
-        for a, b in pair:
-            maxa= 0
-            dq = collections.deque()
-            for cand in child[a]:
-                if cand != b:
-                    dq.append([cand, 1])
-            while dq:
-                cur, n = dq.popleft()
-                maxa = max(maxa, n)
-                for nxt in child[cur]:
-                    dq.append([nxt, n +1])
-            maxb = 0
-            dq = collections.deque()
-            for cand in child[b]:
-                if cand != a:
-                    dq.append([cand, 1])
-            while dq:
-                cur, n =dq.popleft()
-                maxb = max(maxb, n)
-                for nxt in child[cur]:
-                    dq.append([nxt, n + 1])
-            res += 2 + maxa + maxb
-        return max(maxc, res)
+        dp = [0 for i in range(n)]
+        while q:
+            i = q.pop()
+            j = favorite[i]
+            dp[j] = max(dp[j], dp[i] + 1)
+            indegrees[j] -= 1
+            if indegrees[j] == 0:
+                visited[j] = 1
+                q.append(j)
+        
+        result = 0
+        result2 = 0
+        for i in range(n):
+            if visited[i]:
+                continue
+            length = 0 
+            j = i 
+            while visited[j] == 0:
+                visited[j] = 1
+                length += 1
+                j = favorite[j]
+
+            if length == 2:
+                result2 += 2 + dp[i] + dp[favorite[i]]
+            else:
+                result = max(result ,length)
+        return max(result, result2)
