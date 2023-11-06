@@ -6,7 +6,6 @@ class Solution:
         cuts[-1] = 0 #
 
         for i in reversed(range(n)):
-            cuts[i] = n - i -1 # 
             for j in range(i, n):
 
                 if s[i] == s[j] and ( j - i < 3 or dp[i+1][j-1]):
