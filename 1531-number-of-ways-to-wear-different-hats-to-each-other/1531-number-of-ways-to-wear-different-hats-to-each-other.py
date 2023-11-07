@@ -1,23 +1,21 @@
 class Solution:
-    def numberWays(self, hats: List[List[int]]) -> int:
-        
+    def numberWays(self, p2h: List[List[int]]) -> int:
 
-        h2p = [ [] for i in range(40)]
-        n = len(hats)
-        mod = 10 ** 9 + 7
-
-        dpPersonHatsAssigned = [ 0 for i in range(1 << n)]
-        dpPersonHatsAssigned[0] = 1
+        h2p = [ [] for i in range(40)] # 40^10 faster > 10^40
+        n = len(p2h)
+        dp = [0] * (1 << n)
+        dp[0] = 1
 
         for i in range(n):
-            for h in hats[i]:
+            for h in p2h[i]:
                 h2p[h-1].append(i)
+            
         
-        for i in range(40): # hats
-            for j in range((1 << n) - 1, -1, -1): # people
+        for i in range(40):
+            for j in range((1 << n) -1, -1, -1):
 
-                for p in h2p[i]: # assign person_y to hat_x
-                    if ((j & ( 1 << p)) == 0): # not assigned a hat yet
-                        dpPersonHatsAssigned[ j | ( 1 << p)] += dpPersonHatsAssigned[j] 
+                for p in h2p[i]: # people assigned to hat_i
+                    if (j & 1 << p) == 0:
+                        dp[j | 1 << p] += dp[j]
         
-        return dpPersonHatsAssigned[-1]% mod
+        return dp[-1] % (10**9 + 7)
