@@ -8,12 +8,11 @@ class Solution:
 
         for i in range(n):
             for h in p2h[i]:
-                h2p[h-1].append(i)
-            
+                h2p[h-1].append(i)    
         
         for i in range(40):
-            for j in range((1 << n) -1, -1, -1):
-
+            for j in range((1 << n) -1, -1, -1): # we want to go from everyone has hat to no one has hat
+                print(bin(j))
                 for p in h2p[i]: # people assigned to hat_i
                     if (j & 1 << p) == 0:
                         dp[j | 1 << p] += dp[j]
